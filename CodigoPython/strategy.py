@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from datetime import date
-from msilib.schema import Error
+
 
 #Clase contexto
 class Cliente():
-    pass
+    @abstractmethod
+    def pagar(self):
+        pass
 
 #Clase abstracta Strategy()
 class MedioPago(ABC):
@@ -64,12 +66,11 @@ class Tarjeta(MedioPago):
             self.cvv = cvv
 
             self.pagar()
-        #Si no Error y el Programa ofrece otro medio de pago
-        else:
-            return Error
+        
 
     def pagar(self,pagar):
         pagar = self.conectar_posnet()
+        return pagar
 
     def conectar_posnet(self):
         pass
@@ -129,7 +130,7 @@ class Monedero(MedioPago):
 
     def pagar(self):
         pagar = self.verificar_entidad()
-
+        return pagar
             
 class Efectivo(MedioPago): 
     
@@ -142,22 +143,3 @@ class Efectivo(MedioPago):
 
 
 
-
-if __name__=='__main__':
-    
-    if Tarjeta.verficar_tarjeta(estado=True):
-       Tarjeta.pagar()
-    
-    else:
-        print("Elegir otro medio de pago??")
-
-        op = input("elegir medio de pago")
-
-        if op == 1:
-
-            Monedero.pagar()
-        
-        elif op == 2:
-
-            Efectivo.pagar()
-    
